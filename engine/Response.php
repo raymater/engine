@@ -24,7 +24,7 @@ class Response
 	}
 	
 	public function withStatus($_code) {
-		http_response_code($_code);
+		$this->codeHTTP = $_code;
 		return $this;
 	}
 	
@@ -33,6 +33,7 @@ class Response
 			header("Access-Control-Allow-Origin: *");
 		}
 		header("Content-Type: ".$this->ContentType);
+		http_response_code($this->codeHTTP);
 		
 		echo $_write;
 		return $this;
