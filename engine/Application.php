@@ -251,12 +251,15 @@ class Application
 			$middlewares = $routing->getMiddlewares();
 			$action = $routing->getAction();
 			if(count($middlewares) > 0) {
+				$continue = true;
 				for($i = 0; $i <= count($middlewares); $i++) {
-					if(isset($middleware[$i + 1])) {
-						$middleware[$i]($request, $response, $args, $middleware[$i + 1]);
-					}
-					else {
-						$middleware[$i]($request, $response, $args, $action);
+					if($continue == true) {
+						if(isset($middleware[$i + 1])) {
+							$continue = $middleware[$i]($request, $response, $args);
+						}
+						else {
+							$continue = $middleware[$i]($request, $response, $args);
+						}
 					}
 				}
 			}
