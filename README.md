@@ -1,6 +1,6 @@
 # PHP-Engine
 
-*A basic engine on PHP to manage and simplifie routes, HTTP requests and HTTP responses.*
+*A basic engine on PHP to manage and simplify routes, HTTP requests and HTTP responses.*
 
 ## Get started
 
