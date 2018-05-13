@@ -98,5 +98,6 @@ class Route
 			throw new \Exception("Incorrect action. Type function expected.");
 			http_response_code(500);
 		}
+		return $this;
 	}
 }

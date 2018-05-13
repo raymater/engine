@@ -104,10 +104,8 @@ class Application
 		return $this->_baseURL;
 	}
 	
-	public function setVar($_var) {
-		$thisvar = compact($_var);
-		$varName = array_keys($thisvar)[0];
-		$this->globalVars[$varName] = $_var;
+	public function setVar($_name, $_value) {
+		$this->globalVars[$_name] = $_value;
 	}
 	
 	public function deleteVar($_varName) {
@@ -233,7 +231,7 @@ class Application
 		if($routing == null) {
 			http_response_code(404);
 			if($this->route404 != null) {
-				$this->route404($request, $response, array());
+				$this->route404($request, $response, array(), $this);
 			}
 			else {
 				throw new \Exception("404 Error - Not found");
@@ -244,14 +242,9 @@ class Application
 			$action = $routing->getAction();
 			if(count($middlewares) > 0) {
 				$continue = true;
-				for($i = 0; $i <= count($middlewares); $i++) {
+				for($i = 0; $i < count($middlewares); $i++) {
 					if($continue == true) {
-						if(isset($middleware[$i + 1])) {
-							$continue = $middleware[$i]($request, $response, $args);
-						}
-						else {
-							$continue = $middleware[$i]($request, $response, $args);
-						}
+						$continue = $middlewares[$i]($request, $response, $args, $this);
 					}
 				}
 				if($continue == true) {

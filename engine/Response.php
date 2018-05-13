@@ -44,7 +44,7 @@ class Response
 		http_response_code($this->codeHTTP);
 		$xml = new \SimpleXMLElement($_xml);
 		echo $xml->asXML();
-        return $this;
+		return $this;
 	}
 	
 	public function writeJSON($_json = "{}")
@@ -52,7 +52,7 @@ class Response
 		header("Content-Type: application/json");
 		http_response_code($this->codeHTTP);
 		echo (json_encode(json_decode($_json), JSON_UNESCAPED_UNICODE));
-        return $this;
+		return $this;
 	}
 	
 	public function write($_write = "") {
