@@ -55,7 +55,7 @@ $app->HTTPmethod("/your_path", function(Request $req, Response $resp, $args, $ap
 * **$app** : represent an instance of the current app
 
 
-**HTTP Methods : **
+**HTTP Methods :**
 * GET : ``$app->get`` method
 * POST : ``$app->post`` method
 * PUT : ``$app->put`` method
