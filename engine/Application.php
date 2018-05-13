@@ -39,6 +39,10 @@ class Application
 		$pathInfo = pathinfo($currentPath);
 		
 		$this->_baseURL = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER['HTTP_HOST'].$pathInfo['dirname'];
+		
+		if (!(function_exists('password_hash'))) {
+			require_once("lib/password_hash.php");
+		}
     }
 	
 	protected function route($_url, $_action, $_method) {
