@@ -4,9 +4,11 @@ namespace engine;
 class Application
 {
 	protected $debug = false;
+	protected $lang = "en";
 	protected $routes = array();
 	protected $route404 = null;
 	protected $_baseURL = null;
+	protected $globalVars = array();
 	
 	public function __construct($_config) {
 		$this->routes = array();
@@ -17,6 +19,10 @@ class Application
 			}
 		}
 		
+		if(array_key_exists("lang", $_config)) {
+			$this->lang = $_config["lang"];
+		}
+		
 		if($this->debug == true) {
 			error_reporting(E_ALL);
 		}
@@ -24,10 +30,18 @@ class Application
 			error_reporting(0);
 		}
 		
-		$this->_baseURL = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+		$protocol = "http";
+		if(isset($_SERVER["REQUEST_SCHEME"])) {
+			$protocol = $_SERVER["REQUEST_SCHEME"];
+		}
+		
+		$currentPath = $_SERVER['PHP_SELF'];
+		$pathInfo = pathinfo($currentPath);
+		
+		$this->_baseURL = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER['HTTP_HOST'].$pathInfo['dirname'];
     }
 	
-	public function get($_url, $_action) {
+	protected function route($_url, $_action, $_method) {
 		if($_url != "/")
 		{
 			$links = explode("/", $_url);
@@ -48,115 +62,32 @@ class Application
 					}
 				}
 			}
-			$route = new Route("GET", $fullurl, $_action, $args);
-			$this->routes[] = array($route);
+			$route = new Route($_method, $fullurl, $_action, $args, $this);
+			$this->routes[] = $route;
 			return $route;
 		}
 		else
 		{
-			$route = new Route("GET", "/", $_action, array());
-			$this->routes[] = array($route);
+			$route = new Route($_method, "/", $_action, array(), $this);
+			$this->routes[] = $route;
 			return $route;
 		}
+	}
+	
+	public function get($_url, $_action) {
+		return $this->route($_url, $_action, "GET");
 	}
 	
 	public function post($_url, $_action) {
-		if($_url != "/")
-		{
-			$links = explode("/", $_url);
-			
-			$fullurl = "";
-			$args = array();
-			
-			for($i = 0; $i < count($links); $i++) {
-				if($links[$i] != "")
-				{
-					$fullurl .= "/";
-					if((substr($links[$i], -1) == "}") && (substr($links[$i], 0, 1) == "{")) {
-						$args[] = substr($links[$i], 1, -1);
-						$fullurl .= $links[$i];
-					}
-					else {
-						$fullurl .= urlencode($links[$i]);
-					}
-				}
-			}
-			$route = new Route("POST", $fullurl, $_action, $args);
-			$this->routes[] = array($route);
-			return $route;
-		}
-		else
-		{
-			$route = new Route("POST", "/", $_action, array());
-			$this->routes[] = array($route);
-			return $route;
-		}
+		return $this->route($_url, $_action, "POST");
 	}
 	
 	public function put($_url, $_action) {
-		if($_url != "/")
-		{
-			$links = explode("/", $_url);
-			
-			$fullurl = "";
-			$args = array();
-			
-			for($i = 0; $i < count($links); $i++) {
-				if($links[$i] != "")
-				{
-					$fullurl .= "/";
-					if((substr($links[$i], -1) == "}") && (substr($links[$i], 0, 1) == "{")) {
-						$args[] = substr($links[$i], 1, -1);
-						$fullurl .= $links[$i];
-					}
-					else {
-						$fullurl .= urlencode($links[$i]);
-					}
-				}
-			}
-			$route = new Route("PUT", $fullurl, $_action, $args);
-			$this->routes[] = array($route);
-			return $route;
-		}
-		else
-		{
-			$route = new Route("PUT", "/", $_action, array());
-			$this->routes[] = array($route);
-			return $route;
-		}
+		return $this->route($_url, $_action, "PUT");
 	}
 	
 	public function delete($_url, $_action) {
-		if($_url != "/")
-		{
-			$links = explode("/", $_url);
-			
-			$fullurl = "";
-			$args = array();
-			
-			for($i = 0; $i < count($links); $i++) {
-				if($links[$i] != "")
-				{
-					$fullurl .= "/";
-					if((substr($links[$i], -1) == "}") && (substr($links[$i], 0, 1) == "{")) {
-						$args[] = substr($links[$i], 1, -1);
-						$fullurl .= $links[$i];
-					}
-					else {
-						$fullurl .= urlencode($links[$i]);
-					}
-				}
-			}
-			$route = new Route("DELETE", $fullurl, $_action, $args);
-			$this->routes[] = array($route);
-			return $route;
-		}
-		else
-		{
-			$route = new Route("DELETE", "/", $_action, array());
-			$this->routes[] = array($route);
-			return $route;
-		}
+		return $this->route($_url, $_action, "DELETE");
 	}
 	
 	public function error404($_action) {
@@ -173,20 +104,81 @@ class Application
 		return $this->_baseURL;
 	}
 	
+	public function setVar($_var) {
+		$thisvar = compact($_var);
+		$varName = array_keys($thisvar)[0];
+		$this->globalVars[$varName] = $_var;
+	}
+	
+	public function deleteVar($_varName) {
+		foreach ($this->globalVars as $key => $value) {
+			if($key === $_varName) {
+				unset($array[$key]);
+			}
+		}
+	}
+	
+	public function getVar($_varName = null) {
+		if($_varName != null) {
+			$valueVar = null;
+			foreach ($this->globalVars as $key => $value) {
+				if($key === $_varName) {
+					$valueVar = $value;
+				}
+			}
+			return $valueVar;
+		}
+		else {
+			return $this->globalVars;
+		}
+	}
+	
+	public function isDebug() {
+		return $this->debug;
+	}
+	
+	public function getRoute($_name = null) {
+		if($_name != null) {
+			$thisRoute = null;
+			foreach ($this->routes as $route) {
+				if($route->getName() === $_name) {
+					$thisRoute = $route;
+				}
+			}
+			return $thisRoute;
+		}
+		else
+		{
+			return $this->routes;
+		}
+	}
+	
+	public function getLang() {
+		return $this->lang;
+	}
+	
 	public function run() {
 		$requestMethod = $_SERVER['REQUEST_METHOD'];
 		
-		$path_elements = explode("/", $_SERVER['REQUEST_URI']);
-		$tempPI = "";
-		if (isset($path_elements[2])){
-			for ($i = 2 ;$i < count($path_elements); $i++ )
-				$tempPI .= "/".$path_elements[$i];
+		$path_elements = $_SERVER['REQUEST_URI'];
+		
+		$string_path = $path_elements;
+		
+		$currentPath = $_SERVER['PHP_SELF'];
+		$pathInfo = pathinfo($currentPath);
+		
+		$string_path = str_replace($pathInfo["dirname"], '', $string_path);
+		
+		if(substr($string_path, -1) == "/" && $string_path != "/") {
+			$string_path = substr($string_path, 0, count($string_path) - 2);
 		}
 		
-		$requestUrl = $tempPI;
+		$path_elements = explode("/", $string_path);
 		
-		$request = new Request();
-		$response = new Response();
+		$requestUrl = $string_path;
+		
+		$request = new Request($this);
+		$response = new Response($this);
 		
 		$routing = null;
 		
@@ -197,7 +189,7 @@ class Application
 			$argsRoute = null;
 			$argsRoute = array();
 			$fullurl = "";
-			$lurl = $route[0]->getUrl();
+			$lurl = $route->getUrl();
 			$links = explode("/", $lurl);
 			$linksRequest = explode("/", $requestUrl);
 			for($i = 0; $i < count($links); $i++) {
@@ -230,9 +222,9 @@ class Application
 			}
 			
 			if($fullurl === $requestUrl) {
-				if($requestMethod == $route[0]->getMethod())
+				if($requestMethod == $route->getMethod())
 				{
-					$routing = $route[0];
+					$routing = $route;
 					$args = $argsRoute;
 				}
 			}
@@ -262,10 +254,13 @@ class Application
 						}
 					}
 				}
+				if($continue == true) {
+					$action($request, $response, $args, $this);
+				}
 			}
 			else
 			{
-				$action($request, $response, $args);
+				$action($request, $response, $args, $this);
 			}
 		}
 	}

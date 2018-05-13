@@ -25,8 +25,11 @@ class Request
 	public $script_name = null;
 	public $request_uri = null;
 	public $path_info = null;
+	protected $app = null;
 	
-	public function __construct() {
+	public function __construct($_app) {
+		$this->app = $_app;
+		
 		if(isset($_SERVER["REQUEST_METHOD"])) {
 			$this->request_method = $_SERVER["REQUEST_METHOD"];
 		}
