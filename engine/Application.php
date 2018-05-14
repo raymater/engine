@@ -9,6 +9,7 @@ class Application
 	protected $route404 = null;
 	protected $_baseURL = null;
 	protected $globalVars = array();
+	protected $extensions = array();
 	
 	public function __construct($_config) {
 		$this->routes = array();
@@ -21,6 +22,15 @@ class Application
 		
 		if(array_key_exists("lang", $_config)) {
 			$this->lang = $_config["lang"];
+		}
+		
+		if(array_key_exists("no-extension", $_config)) {
+			if("no-extension" === true) {
+				$this->extensions = array();
+			}
+			else {
+				$this->extensions = null;
+			}
 		}
 		
 		if($this->debug == true) {
@@ -159,7 +169,47 @@ class Application
 		return $this->lang;
 	}
 	
+	public function getExtension($_name = null) {
+		if($this->extensions != null) {
+			if($_name === null) {
+				return $this->extensions;
+			}
+			else {
+				$thisExt = null;
+				foreach ($this->extensions as $ext) {
+					if($ext->getName() === $_name) {
+						$thisExt = $_name;
+					}
+				}
+				return $thisExt;
+			}
+		}
+		else {
+			throw new \Exception("Extensions are disabled.");
+			http_response_code(500);
+		}
+	}
+	
+	public function addExtension($_name, $_routine) {
+		if($this->extensions != null) {
+			$ext = new Extension($_name, $_routine);
+			
+			$this->extensions[] = $ext;
+		}
+		else {
+			throw new \Exception("Extensions are disabled.");
+			http_response_code(500);
+		}
+		return $this;
+	}
+	
 	public function run() {
+		if($this->extensions != null) {
+			foreach ($this->extensions as $ext) {
+				$ext->start();
+			}
+		}
+		
 		$requestMethod = $_SERVER['REQUEST_METHOD'];
 		
 		$path_elements = $_SERVER['REQUEST_URI'];
@@ -260,5 +310,7 @@ class Application
 				$action($request, $response, $args, $this);
 			}
 		}
+		
+		return $this;
 	}
 }
