@@ -12,13 +12,17 @@ class Response
 		$this->app = $_app;
 		
 		if($this->app->isDebug() === true) {
-			header("Expires: -1");
-			header("Cache-Control: no-store, no-cache, must-revalidate");
-			header("Pragma: no-cache");
+			if(!headers_sent()) {
+				header("Expires: -1");
+				header("Cache-Control: no-store, no-cache, must-revalidate");
+				header("Pragma: no-cache");
+			}
 		}
 		
 		$this->ContentType = "text/html; charset=utf-8";
-		header("Content-Language: ".$this->app->getLang());
+		if(!headers_sent()) {
+			header("Content-Language: ".$this->app->getLang());
+		}
 		$this->Access_Control_Allow_Origin = false;
 		$this->codeHTTP = 200;
 	}
@@ -59,7 +63,9 @@ class Response
 		if($this->Access_Control_Allow_Origin == true) {
 			header("Access-Control-Allow-Origin: *");
 		}
-		header("Content-Type: ".$this->ContentType);
+		if(!headers_sent()) {
+			header("Content-Type: ".$this->ContentType);
+		}
 		http_response_code($this->codeHTTP);
 		
 		echo $_write;

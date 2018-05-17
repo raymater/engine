@@ -3,28 +3,28 @@ namespace engine;
 
 class Request
 {
-	public $request_method = null;
-	public $request_time = null;
-	public $request_time_float = null;
-	public $query_string = null;
-	public $http_accept = null;
-	public $http_accept_charset = null;
-	public $http_accept_encoding = null;
-	public $http_accept_language = null;
-	public $http_connection = null;
-	public $http_host = null;
-	public $http_referer = null;
-	public $http_user_agent = null;
-	public $https = null;
-	public $remote_addr = null;
-	public $remote_host = null;
-	public $remote_port = null;
-	public $remote_user = null;
-	public $redirect_remote_user = null;
-	public $script_filename = null;
-	public $script_name = null;
-	public $request_uri = null;
-	public $path_info = null;
+	protected $request_method = null;
+	protected $request_time = null;
+	protected $request_time_float = null;
+	protected $query_string = null;
+	protected $http_accept = null;
+	protected $http_accept_charset = null;
+	protected $http_accept_encoding = null;
+	protected $http_accept_language = null;
+	protected $http_connection = null;
+	protected $http_host = null;
+	protected $http_referer = null;
+	protected $http_user_agent = null;
+	protected $https = null;
+	protected $remote_addr = null;
+	protected $remote_host = null;
+	protected $remote_port = null;
+	protected $remote_user = null;
+	protected $redirect_remote_user = null;
+	protected $script_filename = null;
+	protected $script_name = null;
+	protected $request_uri = null;
+	protected $path_info = null;
 	protected $app = null;
 	
 	public function __construct($_app) {
@@ -97,6 +97,11 @@ class Request
 			$this->path_info = $_SERVER["PATH_INFO"];
 		}
 	}
+	
+	public function __get($name)
+    {
+        return $this->$name;
+    }
 	
 	public function getBody() {
 		return file_get_contents('php://input');

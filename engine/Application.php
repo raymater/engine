@@ -104,6 +104,14 @@ class Application
 		return $this->route($_url, $_action, "DELETE");
 	}
 	
+	public function patch($_url, $_action) {
+		return $this->route($_url, $_action, "PATCH");
+	}
+	
+	public function options($_url, $_action) {
+		return $this->route($_url, $_action, "OPTIONS");
+	}
+	
 	public function error404($_action) {
 		if(is_callable($_action)) {
 			$this->route404 = $_action;
@@ -170,7 +178,7 @@ class Application
 	}
 	
 	public function getExtension($_name = null) {
-		if($this->extensions != null) {
+		if($this->extensions !== null) {
 			if($_name === null) {
 				return $this->extensions;
 			}
@@ -178,7 +186,7 @@ class Application
 				$thisExt = null;
 				foreach ($this->extensions as $ext) {
 					if($ext->getName() === $_name) {
-						$thisExt = $_name;
+						$thisExt = $ext;
 					}
 				}
 				return $thisExt;
@@ -191,7 +199,7 @@ class Application
 	}
 	
 	public function addExtension($_name, $_routine) {
-		if($this->extensions != null) {
+		if($this->extensions !== null) {
 			$ext = new Extension($_name, $_routine);
 			
 			$this->extensions[] = $ext;
