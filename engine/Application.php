@@ -235,7 +235,7 @@ class Application
 		* @param string $_name
 		*	Name of your global var
 		* @param mixed $_value
-			A value to save
+		*	A value to save
 		* @return mixed
 		*	The value saved ($_value)
 	**/
