@@ -8,7 +8,10 @@ class Application
 	protected $routes = array();
 	protected $route404 = null;
 	protected $_baseURL = null;
+	protected $PHPversion = null;
+	protected $serverSoftware = null;
 	protected $globalVars = array();
+	protected $timezone = "GMT";
 	
 	public function __construct($_config) {
 		$this->routes = array();
@@ -21,6 +24,10 @@ class Application
 		
 		if(array_key_exists("lang", $_config)) {
 			$this->lang = $_config["lang"];
+		}
+		
+		if(array_key_exists("timezone", $_config)) {
+			$this->timezone = $_config["timezone"];
 		}
 		
 		if($this->debug == true) {
@@ -43,6 +50,12 @@ class Application
 		if (!(function_exists('password_hash'))) {
 			require_once("lib/password_hash.php");
 		}
+		
+		$this->PHPversion = phpversion();
+		
+		$this->serverSoftware = $_SERVER['SERVER_SOFTWARE'];
+		
+		date_default_timezone_set($this->timezone);
     }
 	
 	protected function route($_url, $_action, $_method) {
@@ -145,6 +158,24 @@ class Application
 	
 	public function isDebug() {
 		return $this->debug;
+	}
+	
+	public function getPhpVersion() {
+		return $this->PHPversion;
+	}
+	
+	public function getServerSoftware() {
+		return $this->serverSoftware;
+	}
+	
+	public function getTimezone() {
+		return $this->timezone;
+	}
+	
+	public function setTimezone($_timezone = "GMT") {
+		$this->timezone = $_timezone;
+		date_default_timezone_set($this->timezone);
+		return $this->timezone;
 	}
 	
 	public function getRoute($_name = null) {
