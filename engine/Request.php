@@ -157,10 +157,12 @@ class Request
 	}
 
 	public function filterGET() {
-		return $this->filter($_GET);
+		$_GET = $this->filter($_GET);
+		return $_GET;
 	}
 
 	public function filterPOST() {
-		return $this->filter($_POST);
+		$_POST = $this->filter($_POST);
+		return $_POST;
 	}
 }
