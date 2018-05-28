@@ -120,4 +120,47 @@ class Request
 			}
 		}
 	}
+	
+	private function filter($array = array()) {
+		if(count($array) > 0) {
+			foreach($array as $param => $value) {
+				if(is_null($value) === true) {
+					$array[$param] = $value;
+				}
+				else {
+					if(is_int($value) === true) {
+						$array[$param] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+					}
+					else {
+						if(is_bool($value) === true) {
+							$array[$param] = $value;
+						}
+						else {
+							if(is_float($value) === true) {
+								$array[$param] = filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);
+							}
+							else {
+								if(is_string($value) === true) {
+									$array[$param] = filter_var(addslashes($value), FILTER_SANITIZE_STRING);
+								}
+								else {
+									$array[$param] = $value;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return $array;
+	}
+
+	public function filterGET() {
+		return $this->filter($_GET);
+	}
+
+	public function filterPOST() {
+		return $this->filter($_POST);
+	}
 }
