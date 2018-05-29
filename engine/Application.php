@@ -471,20 +471,30 @@ class Application
 		else {
 			$middlewares = $routing->getMiddlewares();
 			$action = $routing->getAction();
+			$continue = true;
 			if(count($middlewares) > 0) {
-				$continue = true;
 				for($i = 0; $i < count($middlewares); $i++) {
 					if($continue == true) {
 						$continue = $middlewares[$i]($request, $response, $args, $this);
 					}
 				}
-				if($continue == true) {
+			}
+			
+			if($continue == true) {
+				if($routing->isAuth() === true) {
+					if(!isset($_SERVER['PHP_AUTH_USER'])) {
+						header('WWW-Authenticate: Basic realm="Application authentication"');
+						header('HTTP/1.0 401 Unauthorized');
+						echo '401 - Authentication required';
+						exit;
+					}
+					else {
+						$action($request, $response, $args, $this);
+					}
+				}
+				else {
 					$action($request, $response, $args, $this);
 				}
-			}
-			else
-			{
-				$action($request, $response, $args, $this);
 			}
 		}
 		

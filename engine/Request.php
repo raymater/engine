@@ -25,6 +25,8 @@ class Request
 	protected $script_name = null;
 	protected $request_uri = null;
 	protected $path_info = null;
+	protected $auth_user = null;
+	protected $auth_pw = null;
 	protected $app = null;
 	
 	/**
@@ -104,6 +106,12 @@ class Request
 		}
 		if(isset($_SERVER["PATH_INFO"])) {
 			$this->path_info = $_SERVER["PATH_INFO"];
+		}
+		if(isset($_SERVER["PHP_AUTH_USER"])) {
+			$this->auth_user = $_SERVER["PHP_AUTH_USER"];
+		}
+		if(isset($_SERVER["PHP_AUTH_PW"])) {
+			$this->auth_pw = $_SERVER["PHP_AUTH_PW"];
 		}
 	}
 	

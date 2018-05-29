@@ -9,6 +9,7 @@ class Route
 	protected $args;
 	protected $name;
 	protected $app;
+	protected $auth;
 	protected $middlewares = array();
 	
 	/**
@@ -22,11 +23,13 @@ class Route
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Indicate if route require a Basic HTTP Authentication (by default : false)
 		* @param Application $_app
 		*	The current application
 		* @return void
 	**/
-	public function __construct($_method, $_url, $_action, $_app) {
+	public function __construct($_method, $_url, $_action, $_app, $_auth = false) {
 		if(is_callable($_action)) {
 			$args = array();
 			$links = explode("/", $_url);
@@ -51,6 +54,7 @@ class Route
 			$this->action = $_action;
 			$this->args = $args;
 			$this->app = $_app;
+			$this->auth = $_auth;
 		}
 		else {
 			throw new \Exception("Incorrect action. Type function expected.");
@@ -188,6 +192,18 @@ class Route
 	public function setName($_name = null) {
 		$this->name = $_name;
 		return $this;
+	}
+	
+	/**
+		* Is this route require HTTP authentication ?
+		*
+		* Return a boolean value represent if this route require HTTP authentication.
+		*
+		* @return bool
+		*	Authentication setting
+	**/
+	public function isAuth() {
+		return $this->auth;
 	}
 	
 	/**
