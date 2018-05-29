@@ -95,6 +95,9 @@ class Response
 	**/
 	public function writeXML($_xml = "")
 	{
+		if($this->Access_Control_Allow_Origin == true) {
+			header("Access-Control-Allow-Origin: *");
+		}
 		header("Content-Type: application/xml");
 		http_response_code($this->codeHTTP);
 		$xml = new \SimpleXMLElement($_xml);
@@ -114,6 +117,9 @@ class Response
 	**/
 	public function writeJSON($_json = "{}")
 	{
+		if($this->Access_Control_Allow_Origin == true) {
+			header("Access-Control-Allow-Origin: *");
+		}
 		header("Content-Type: application/json");
 		http_response_code($this->codeHTTP);
 		echo (json_encode(json_decode($_json), JSON_UNESCAPED_UNICODE));
@@ -132,6 +138,9 @@ class Response
 	**/
 	public function writeYAML($_yaml = "")
 	{
+		if($this->Access_Control_Allow_Origin == true) {
+			header("Access-Control-Allow-Origin: *");
+		}
 		header("Content-Type: application/x-yaml");
 		http_response_code($this->codeHTTP);
 		echo (yaml_emit(yaml_parse($_yaml)));
