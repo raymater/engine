@@ -483,6 +483,7 @@ class Application
 			if($continue == true) {
 				if($routing->isAuth() === true) {
 					if(!isset($_SERVER['PHP_AUTH_USER'])) {
+						http_response_code(401);
 						header('WWW-Authenticate: Basic realm="Application authentication"');
 						header('HTTP/1.0 401 Unauthorized');
 						echo '401 - Authentication required';
