@@ -19,7 +19,7 @@ class Application
 		* Make the configuration for your app by config array passed on param. Also set the base path for URL, the PHP version and the name of the current server software.
 		*
 		* @param array $_config
-		*	The config array
+		*	The config array : support "debug", "lang" and "timezone".
 		* @return void
 	**/
 	public function __construct($_config = array()) {
@@ -70,31 +70,13 @@ class Application
 	protected function route($_url, $_action, $_method) {
 		if($_url != "/")
 		{
-			$links = explode("/", $_url);
-			
-			$fullurl = "";
-			$args = array();
-			
-			for($i = 0; $i < count($links); $i++) {
-				if($links[$i] != "")
-				{
-					$fullurl .= "/";
-					if((substr($links[$i], -1) == "}") && (substr($links[$i], 0, 1) == "{")) {
-						$args[] = substr($links[$i], 1, -1);
-						$fullurl .= $links[$i];
-					}
-					else {
-						$fullurl .= urlencode($links[$i]);
-					}
-				}
-			}
-			$route = new Route($_method, $fullurl, $_action, $args, $this);
+			$route = new Route($_method, $_url, $_action, $this);
 			$this->routes[] = $route;
 			return $route;
 		}
 		else
 		{
-			$route = new Route($_method, "/", $_action, array(), $this);
+			$route = new Route($_method, "/", $_action, $this);
 			$this->routes[] = $route;
 			return $route;
 		}

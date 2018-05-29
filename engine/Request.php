@@ -27,6 +27,15 @@ class Request
 	protected $path_info = null;
 	protected $app = null;
 	
+	/**
+		* Create the Request object
+		*
+		* Make the HTTP Request object.
+		*
+		* @param Application $_app
+		*	The current application
+		* @return void
+	**/
 	public function __construct($_app) {
 		$this->app = $_app;
 		
@@ -98,15 +107,41 @@ class Request
 		}
 	}
 	
+	/**
+		* Return a value from a Request property
+		*
+		* Magic method returning a value from a Request property.
+		*
+		* @param string $name
+		*	Name of property
+		* @return mixed
+		*	Value of property
+	**/
 	public function __get($name)
     {
         return $this->$name;
     }
 	
+	/**
+		* Get the request body
+		*
+		* Return the content of request body.
+		*
+		* @return string
+		*	Content of request body
+	**/
 	public function getBody() {
 		return file_get_contents('php://input');
 	}
 	
+	/**
+		* Get the parsed request body
+		*
+		* Return the parsed request body : JSON object, XML object (SimpleXML object), YAML object or RAW request body data (string).
+		*
+		* @return mixed
+		*	Object of request parsed
+	**/
 	public function getParsedBody() {
 		if(json_decode(file_get_contents('php://input')) != null) {
 			return json_decode(file_get_contents('php://input'));
@@ -116,12 +151,17 @@ class Request
 				return simplexml_load_string(file_get_contents('php://input'));
 			}
 			else {
-				return file_get_contents('php://input');
+				if(yaml_parse(file_get_contents('php://input')) != false) {
+					return yaml_parse(file_get_contents('php://input'));
+				}
+				else {
+					return file_get_contents('php://input');
+				}
 			}
 		}
 	}
 	
-	private function filter($array = array()) {
+	protected function filter($array = array()) {
 		if(count($array) > 0) {
 			foreach($array as $param => $value) {
 				if(is_null($value) === true) {
@@ -156,11 +196,27 @@ class Request
 		return $array;
 	}
 
+	/**
+		* Sanitize all datas on $_GET
+		*
+		* Filter all values on $_GET array
+		*
+		* @return array
+		*	Return the filter $_GET array
+	**/
 	public function filterGET() {
 		$_GET = $this->filter($_GET);
 		return $_GET;
 	}
-
+	
+	/**
+		* Sanitize all datas on $_POST
+		*
+		* Filter all values on $_POST array
+		*
+		* @return array
+		*	Return the filter $_POST array
+	**/
 	public function filterPOST() {
 		$_POST = $this->filter($_POST);
 		return $_POST;
