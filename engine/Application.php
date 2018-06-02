@@ -456,6 +456,12 @@ class Application
 					$routing = $route;
 					$args = $argsRoute;
 				}
+				else
+				{
+					http_response_code(405);
+					throw new \Exception("405 Error - Method Not Allowed");
+					exit;
+				}
 			}
 		}
 		
