@@ -8,8 +8,8 @@ function load($class) {
 				unset($class_tab[$i]);
         }
 		$class_path = implode(DIRECTORY_SEPARATOR, $class_tab);
-		if(file_exists("..".DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR.$class_path.".php")) {
-			require_once("..".DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR.$class_path.".php");
+		if(file_exists("..".DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."php".$class_path.".php")) {
+			require_once("..".DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."php".$class_path.".php");
 			return true;
         }
     }
