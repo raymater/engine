@@ -22,6 +22,7 @@ class Response
 		
 		if($this->app->isDebug() === true) {
 			if(!headers_sent()) {
+				header("Age: 0");
 				header("Expires: -1");
 				header("Cache-Control: no-store, no-cache, must-revalidate");
 				header("Pragma: no-cache");

@@ -4,6 +4,11 @@
 
 ## Get started
 
+**Composer :**
+```
+$ composer require engine/phpengine
+```
+
 Make sure that you have 5 files : 
 * Application.php
 * autoload.php

@@ -68,18 +68,32 @@ class Application
     }
 	
 	protected function route($_url, $_action, $_method) {
+		$route = null;
 		if($_url != "/")
 		{
 			$route = new Route($_method, $_url, $_action, $this);
-			$this->routes[] = $route;
-			return $route;
 		}
 		else
 		{
 			$route = new Route($_method, "/", $_action, $this);
-			$this->routes[] = $route;
-			return $route;
 		}
+		
+		$this->routes[] = $route;
+		
+		$methodsAllowed = array();
+		foreach($this->routes as $aRoute) {
+			if($aRoute->getUrl() == $_url) {
+				$methodsAllowed[] = $aRoute->getMethod();
+			}
+		}
+		
+		foreach($this->routes as $aRoute) {
+			if($aRoute->getUrl() == $_url) {
+				$aRoute->allowMethods = $methodsAllowed;
+			}
+		}
+		
+		return $route;
 	}
 	
 	/**
@@ -414,6 +428,8 @@ class Application
 		$argsRoute = array();
 		$args = null;
 		
+		$errorMethod = false;
+		$passedControl = false;
 		foreach($this->routes as $route) {
 			$argsRoute = null;
 			$argsRoute = array();
@@ -450,57 +466,94 @@ class Application
 				$fullurl = substr($fullurl, 0, count($fullurl));
 			}
 			
+			
 			if($fullurl === $requestUrl) {
 				if($requestMethod == $route->getMethod())
 				{
 					$routing = $route;
 					$args = $argsRoute;
+					$errorMethod = false;
+					$passedControl = true;
 				}
 				else
 				{
-					http_response_code(405);
-					throw new \Exception("405 Error - Method Not Allowed");
-					exit;
+					$errorMethod = true;
 				}
 			}
 		}
 		
-		if($routing == null) {
-			http_response_code(404);
-			if($this->route404 != null) {
-				$this->route404($request, $response, array(), $this);
-			}
-			else {
-				throw new \Exception("404 Error - Not found");
-			}
-		}
-		else {
-			$middlewares = $routing->getMiddlewares();
-			$action = $routing->getAction();
-			$continue = true;
-			if(count($middlewares) > 0) {
-				for($i = 0; $i < count($middlewares); $i++) {
-					if($continue == true) {
-						$continue = $middlewares[$i]($request, $response, $args, $this);
-					}
+		if($errorMethod === true && $passedControl === false) {
+			if(count($route->allowMethods) > 0) {
+				$stringMethods = "";
+				foreach($route->allowMethods as $aMethod) {
+					$stringMethods .= $aMethod.", ";
 				}
+				if(substr($stringMethods, -1) == " ") {
+					$stringMethods = substr($stringMethods, 0, -1);
+				}
+				if(substr($stringMethods, -1) == ",") {
+					$stringMethods = substr($stringMethods, 0, -1);
+				}
+				header("Allow: ".$stringMethods);
 			}
 			
-			if($continue == true) {
-				if($routing->isAuth() === true) {
-					if(!isset($_SERVER['PHP_AUTH_USER'])) {
-						http_response_code(401);
-						header('WWW-Authenticate: Basic realm="Application authentication"');
-						header('HTTP/1.0 401 Unauthorized');
-						echo '401 - Authentication required';
-						exit;
+			http_response_code(405);
+			throw new \Exception("405 Error - Method Not Allowed");
+			exit;
+		}
+		else
+		{
+			if($routing == null) {
+				http_response_code(404);
+				if($this->route404 != null) {
+					$this->route404($request, $response, array(), $this);
+				}
+				else {
+					throw new \Exception("404 Error - Not found");
+				}
+			}
+			else {
+				if(count($routing->allowMethods) > 0) {
+					$stringMethods = "";
+					foreach($routing->allowMethods as $aMethod) {
+						$stringMethods .= $aMethod.", ";
+					}
+					if(substr($stringMethods, -1) == " ") {
+						$stringMethods = substr($stringMethods, 0, -1);
+					}
+					if(substr($stringMethods, -1) == ",") {
+						$stringMethods = substr($stringMethods, 0, -1);
+					}
+					header("Allow: ".$stringMethods);
+				}
+				
+				$middlewares = $routing->getMiddlewares();
+				$action = $routing->getAction();
+				$continue = true;
+				if(count($middlewares) > 0) {
+					for($i = 0; $i < count($middlewares); $i++) {
+						if($continue == true) {
+							$continue = $middlewares[$i]($request, $response, $args, $this);
+						}
+					}
+				}
+				
+				if($continue == true) {
+					if($routing->isAuth() === true) {
+						if(!isset($_SERVER['PHP_AUTH_USER'])) {
+							http_response_code(401);
+							header('WWW-Authenticate: Basic realm="Application authentication"');
+							header('HTTP/1.0 401 Unauthorized');
+							echo '401 - Authentication required';
+							exit;
+						}
+						else {
+							$action($request, $response, $args, $this);
+						}
 					}
 					else {
 						$action($request, $response, $args, $this);
 					}
-				}
-				else {
-					$action($request, $response, $args, $this);
 				}
 			}
 		}

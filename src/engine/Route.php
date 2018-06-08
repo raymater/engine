@@ -10,6 +10,7 @@ class Route
 	protected $name;
 	protected $app;
 	protected $auth;
+	public $allowMethods = array();
 	protected $middlewares = array();
 	
 	/**

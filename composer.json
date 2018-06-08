@@ -1,0 +1,23 @@
+{
+    "name": "engine/phpengine",
+    "type": "library",
+    "description": "PHP-Engine is a PHP micro framework to manage and simplify routes, HTTP requests and HTTP responses.",
+    "keywords": ["framework","micro","api","router","http","request","response"],
+    "homepage": "https://github.com/raymater/engine",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "raymater",
+            "email": "raymater@outlook.fr",
+            "homepage": "http://twitter.com/raymater55/"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "engine\\": "src"
+        }
+    }
+}

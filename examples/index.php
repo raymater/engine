@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-require_once("engine/autoload.php");
+//require_once("../src/autoload.php");
+require_once("vendor/autoload.php");
 
 use \engine\Request as Request;
 use \engine\Response as Response;
