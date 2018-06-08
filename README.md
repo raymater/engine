@@ -6,7 +6,7 @@
 
 **Composer :**
 ```
-$ composer require phpengine/engine
+$ composer require phpengine/engine "dev-master"
 ```
 
 Make sure that you have 5 files : 
