@@ -1,5 +1,5 @@
 {
-    "name": "engine/phpengine",
+    "name": "phpengine/engine",
     "type": "library",
     "description": "PHP-Engine is a PHP micro framework to manage and simplify routes, HTTP requests and HTTP responses.",
     "keywords": ["framework","micro","api","router","http","request","response"],
