@@ -4,11 +4,11 @@ session_start();
 //require_once("../src/autoload.php");
 require_once("vendor/autoload.php");
 
-use \engine\Request as Request;
-use \engine\Response as Response;
+use \phpengine\Request as Request;
+use \phpengine\Response as Response;
 
 $config = array("debug" => true, "lang" => "en");
-$app = new engine\Application($config);
+$app = new phpengine\Application($config);
 
 $app->get("/", function(Request $req, Response $resp, $args, $app) {
 	$resp->write("

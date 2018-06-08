@@ -9,9 +9,8 @@
 $ composer require phpengine/engine "dev-master"
 ```
 
-Make sure that you have 5 files : 
+Make sure that you have 4 files : 
 * Application.php
-* autoload.php
 * Request.php
 * Response.php
 * Route.php
@@ -26,14 +25,14 @@ Create an *index.php* file.
 <?php
 session_start();
 
-require_once("engine/autoload.php");
+require_once("vendor/autoload.php");
 
-use \engine\Request as Request;
-use \engine\Response as Response;
+use \phpengine\Request as Request;
+use \phpengine\Response as Response;
 
 // Settings
 $config = array("debug" => true, "lang" => "fr");
-$app = new engine\Application($config);
+$app = new phpengine\Application($config);
 
 // Declare your first route : my home
 $app->get("/", function(Request $req, Response $resp, $args, $app) {
@@ -117,8 +116,8 @@ If you want to declare your middleware on an other file you can make a php file 
 ```
 <?php
 namespace middleware; // Put your php file on middleware directory (or your namespace name)
-use \engine\Request as Request;
-use \engine\Response as Response;
+use \phpengine\Request as Request;
+use \phpengine\Response as Response;
 class myMiddleware {
     public function __invoke(Request $req, Response $resp, $args, $app)
     {
