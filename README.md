@@ -6,7 +6,7 @@
 
 **Composer :**
 ```
-$ composer require engine/phpengine
+$ composer require phpengine/engine
 ```
 
 Make sure that you have 5 files : 
