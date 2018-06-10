@@ -114,7 +114,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">61</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">62</span>
                                 </a>
                             </li>
                             <li>
@@ -144,19 +144,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1907743099"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-290836113"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1907743099" class="accordion-body collapse in">
+            <div id="namespace-290836113" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1304681661"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1879550321"></a>
                                 <a href="../namespaces/phpengine.html" style="margin-left: 30px; padding-left: 0">phpengine</a>
             </div>
-            <div id="namespace-1304681661" class="accordion-body collapse ">
+            <div id="namespace-1879550321" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -567,7 +567,7 @@
             <article class="method">
                 <h3 class="public ">get()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">get(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a GET route</em></p>
                 <p>Make a route with GET method while specifying URL and the action.</p>
 
@@ -582,6 +582,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -609,7 +614,7 @@
             <article class="method">
                 <h3 class="public ">post()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">post(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">post(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a POST route</em></p>
                 <p>Make a route with POST method while specifying URL and the action.</p>
 
@@ -624,6 +629,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -651,7 +661,7 @@
             <article class="method">
                 <h3 class="public ">put()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">put(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">put(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a PUT route</em></p>
                 <p>Make a route with PUT method while specifying URL and the action.</p>
 
@@ -666,6 +676,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -693,7 +708,7 @@
             <article class="method">
                 <h3 class="public ">delete()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">delete(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">delete(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a DELETE route</em></p>
                 <p>Make a route with DELETE method while specifying URL and the action.</p>
 
@@ -708,6 +723,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -735,7 +755,7 @@
             <article class="method">
                 <h3 class="public ">patch()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">patch(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">patch(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a PATCH route</em></p>
                 <p>Make a route with PATCH method while specifying URL and the action.</p>
 
@@ -750,6 +770,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -777,7 +802,7 @@
             <article class="method">
                 <h3 class="public ">options()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">options(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>) : \phpengine\Route</pre>
+                <pre class="signature" style="margin-right: 54px;">options(string  <span class="argument">$_url</span>, callable  <span class="argument">$_action</span>, boolean  <span class="argument">$_auth = false</span>) : \phpengine\Route</pre>
                 <p><em>Create a OPTIONS route</em></p>
                 <p>Make a route with OPTIONS method while specifying URL and the action.</p>
 
@@ -792,6 +817,11 @@
                                 <td>callable</td>
                                 <td>$_action </td>
                                 <td><p>What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$_auth </td>
+                                <td><p>Set if route require HTTP Auth (Default : false)</p></td>
                             </tr>
                                             </table>
                 
@@ -1246,7 +1276,7 @@
             <article class="method">
                 <h3 class="protected ">route()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">route(  <span class="argument">$_url</span>,   <span class="argument">$_action</span>,   <span class="argument">$_method</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">route(  <span class="argument">$_url</span>,   <span class="argument">$_action</span>,   <span class="argument">$_method</span>,   <span class="argument">$_auth = false</span>) </pre>
                 <p><em></em></p>
                 
 
@@ -1265,6 +1295,11 @@
                                                     <tr>
                                 <td></td>
                                 <td>$_method </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$_auth </td>
                                 <td></td>
                             </tr>
                                             </table>
@@ -1334,7 +1369,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 8th, 2018 at 11:37.
+                    on June 10th, 2018 at 15:09.
                 </section>
             </section>
         </section>

@@ -67,15 +67,15 @@ class Application
 		date_default_timezone_set($this->timezone);
     }
 	
-	protected function route($_url, $_action, $_method) {
+	protected function route($_url, $_action, $_method, $_auth = false) {
 		$route = null;
 		if($_url != "/")
 		{
-			$route = new Route($_method, $_url, $_action, $this);
+			$route = new Route($_method, $_url, $_action, $this, $_auth);
 		}
 		else
 		{
-			$route = new Route($_method, "/", $_action, $this);
+			$route = new Route($_method, "/", $_action, $this, $_auth);
 		}
 		
 		$this->routes[] = $route;
@@ -105,11 +105,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function get($_url, $_action) {
-		return $this->route($_url, $_action, "GET");
+	public function get($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "GET", $_auth);
 	}
 	
 	/**
@@ -121,11 +123,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function post($_url, $_action) {
-		return $this->route($_url, $_action, "POST");
+	public function post($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "POST", $_auth);
 	}
 	
 	/**
@@ -137,11 +141,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function put($_url, $_action) {
-		return $this->route($_url, $_action, "PUT");
+	public function put($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "PUT", $_auth);
 	}
 	
 	/**
@@ -153,11 +159,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function delete($_url, $_action) {
-		return $this->route($_url, $_action, "DELETE");
+	public function delete($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "DELETE", $_auth);
 	}
 	
 	/**
@@ -169,11 +177,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function patch($_url, $_action) {
-		return $this->route($_url, $_action, "PATCH");
+	public function patch($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "PATCH", $_auth);
 	}
 	
 	/**
@@ -185,11 +195,13 @@ class Application
 		*	Your URL (start with "/").
 		* @param callable $_action
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
 		* @return Route
 		*	The Route object created.
 	**/
-	public function options($_url, $_action) {
-		return $this->route($_url, $_action, "OPTIONS");
+	public function options($_url, $_action, $_auth = false) {
+		return $this->route($_url, $_action, "OPTIONS", $_auth);
 	}
 	
 	/**
