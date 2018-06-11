@@ -375,9 +375,11 @@ class Application
 	public function setTimezone($_timezone = "GMT") {
 		$this->timezone = $_timezone;
 		$res = date_default_timezone_set($this->timezone);
+		date_timezone_set($this->timezone);
 		if($res == false) {
 			$this->timezone = "GMT";
 			date_default_timezone_set($this->timezone);
+			date_timezone_set($this->timezone);
 		}
 		return $this->timezone;
 	}
