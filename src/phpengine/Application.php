@@ -67,7 +67,23 @@ class Application
 		date_default_timezone_set($this->timezone);
     }
 	
-	protected function route($_url, $_action, $_method, $_auth = false) {
+	/**
+		* Create a custom route
+		*
+		* Make a route by specifying URL, the action and the method.
+		*
+		* @param string $_url
+		*	Your URL (start with "/").
+		* @param callable $_action
+		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
+		* @param string $_method
+		*	Your HTTP Method (Default : "GET")
+		* @param bool $_auth
+		*	Set if route require HTTP Auth (Default : false)
+		* @return Route
+		*	The Route object created.
+	**/
+	public function route($_url, $_action, $_method = "GET", $_auth = false) {
 		$route = null;
 		if($_url != "/")
 		{
