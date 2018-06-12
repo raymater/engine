@@ -26,11 +26,11 @@ class Route
 		*	What do you want to do on this URL ? (function(Request $req, Response $resp, $args, $app) { // Do Something }).
 		* @param Application $_app
 		*	The current application
-		* @param bool $_auth
-		*	Indicate if route require a Basic HTTP Authentication (by default : false)
+		* @param mixed $_auth
+		*	Indicate if route require an HTTP Authentication, object Authentication required if yes (by default : null).
 		* @return void
 	**/
-	public function __construct($_method, $_url, $_action, $_app, $_auth = false) {
+	public function __construct($_method, $_url, $_action, $_app, $_auth = null) {
 		if(is_callable($_action)) {
 			$args = array();
 			$links = explode("/", $_url);
@@ -204,6 +204,23 @@ class Route
 		*	Authentication setting
 	**/
 	public function isAuth() {
+		if($this->auth === null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	/**
+		* Get the Authentication object for this route
+		*
+		* Return the Authentication object.
+		*
+		* @return mixed
+		*	Authentication object or null if this route doesn't have Auth options
+	**/
+	public function getAuth() {
 		return $this->auth;
 	}
 	
