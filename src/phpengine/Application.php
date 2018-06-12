@@ -581,7 +581,7 @@ class Application
 								}
 								else {
 									$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-									call_user_func($actionNoAuth, $request, $response, $args, $this);
+									call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 								}
 							}
 							else {
@@ -599,7 +599,7 @@ class Application
 								}
 								else {
 									$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-									call_user_func($actionNoAuth, $request, $response, $args, $this);
+									call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 								}
 							}
 						}
@@ -632,7 +632,7 @@ class Application
 									}
 									else {
 										$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-										call_user_func($actionNoAuth, $request, $response, $args, $this);
+										call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 									}
 								}
 								else {
@@ -647,7 +647,7 @@ class Application
 										}
 										else {
 											$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-											call_user_func($actionNoAuth, $request, $response, $args, $this);
+											call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 										}
 									}
 									else {
@@ -662,7 +662,7 @@ class Application
 											}
 											else {
 												$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-												call_user_func($actionNoAuth, $request, $response, $args, $this);
+												call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 											}
 										}
 										else {
