@@ -571,34 +571,44 @@ class Application
 				if($continue == true) {
 					if($routing->isAuth() === true) {
 						if($routing->getAuth()->getType() == "BASIC") {
-							if(!isset($_SERVER['PHP_AUTH_USER'])) {
+							if(!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
 								http_response_code(401);
 								header('WWW-Authenticate: Basic realm="'.$routing->getAuth()->getRealm().'"');
 								header('HTTP/1.1 401 Unauthorized');
-								if($routing->getAuth()->getActionNoAuth() == null) {
+								
+								$actionNoAuth = $routing->getAuth()->getActionNoAuth();
+								if($actionNoAuth == null) {
+									echo "401 - Unauthorized";
+									exit;
+								}
+								else {
+									call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
+								}
+							}
+							
+							$authenticated = false;
+							$credentials = $routing->getAuth()->getCredentials();
+							
+							foreach($credentials as $user => $password) {
+								if($user == $_SERVER['PHP_AUTH_USER'] && $password == $_SERVER['PHP_AUTH_PW']) {
+									$authenticated = true;
+								}
+							}
+							
+							if($authenticated == true) {
+								$action($request, $response, $args, $this);
+							}
+							else {
+								http_response_code(401);
+								header('WWW-Authenticate: Basic realm="'.$routing->getAuth()->getRealm().'"');
+								header('HTTP/1.1 401 Unauthorized');
+								
+								$actionNoAuth = $routing->getAuth()->getActionNoAuth();
+								if($actionNoAuth == null) {
 									echo '401 - Authentication required';
 									exit;
 								}
 								else {
-									$actionNoAuth = $routing->getAuth()->getActionNoAuth();
-									call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
-								}
-							}
-							else {
-								$credentials = $routing->getAuth()->getCredentials();
-								$authenticated = false;
-								
-								foreach($credentials as $user => $password) {
-									if($user === $_SERVER['PHP_AUTH_USER'] && $password === $_SERVER['PHP_AUTH_PW']) {
-										$authenticated = true;
-									}
-								}
-								
-								if($authenticated === true) {
-									$action($request, $response, $args, $this);
-								}
-								else {
-									$actionNoAuth = $routing->getAuth()->getActionNoAuth();
 									call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 								}
 							}
@@ -626,12 +636,12 @@ class Application
 									header('HTTP/1.1 401 Unauthorized');
 									header('WWW-Authenticate: Digest realm="'.$routing->getAuth()->getRealm().'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($routing->getAuth()->getRealm()).'"');
 									
-									if($routing->getAuth()->getActionNoAuth() == null) {
+									$actionNoAuth = $routing->getAuth()->getActionNoAuth();
+									if($actionNoAuth == null) {
 										echo '401 - Authentication required';
 										exit;
 									}
 									else {
-										$actionNoAuth = $routing->getAuth()->getActionNoAuth();
 										call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 									}
 								}
@@ -641,12 +651,12 @@ class Application
 									$credentials = $routing->getAuth()->getCredentials();
 									
 									if($data === false || !isset($credentials[$data['username']])) {
-										if($routing->getAuth()->getActionNoAuth() == null) {
+										$actionNoAuth = $routing->getAuth()->getActionNoAuth();
+										if($actionNoAuth == null) {
 											echo '401 - Authentication required';
 											exit;
 										}
 										else {
-											$actionNoAuth = $routing->getAuth()->getActionNoAuth();
 											call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 										}
 									}
@@ -656,12 +666,12 @@ class Application
 										$valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
 
 										if ($data['response'] != $valid_response) {
-											if($routing->getAuth()->getActionNoAuth() == null) {
+											$actionNoAuth = $routing->getAuth()->getActionNoAuth();
+											if($actionNoAuth == null) {
 												echo '401 - Authentication required';
 												exit;
 											}
 											else {
-												$actionNoAuth = $routing->getAuth()->getActionNoAuth();
 												call_user_func_array($actionNoAuth, array($request, $response, $args, $this));
 											}
 										}

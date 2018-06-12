@@ -44,7 +44,7 @@ class Authentication
 					http_response_code(500);
 				}
 				else {
-					$this->credientials = $_credentials;
+					$this->credentials = $_credentials;
 					$this->type = $_type;
 					$this->actionNoAuth = $_actionNoAuth;
 					$this->realm = $_realm;
