@@ -575,7 +575,7 @@ class Application
 								http_response_code(401);
 								header('WWW-Authenticate: Basic realm="'.$routing->getAuth()->getRealm().'"');
 								header('HTTP/1.1 401 Unauthorized');
-								if($routing->getAuth()->getActionNoAuth() === null) {
+								if($routing->getAuth()->getActionNoAuth() == null) {
 									echo '401 - Authentication required';
 									exit;
 								}
@@ -626,7 +626,7 @@ class Application
 									header('HTTP/1.1 401 Unauthorized');
 									header('WWW-Authenticate: Digest realm="'.$routing->getAuth()->getRealm().'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($routing->getAuth()->getRealm()).'"');
 									
-									if($routing->getAuth()->getActionNoAuth() === null) {
+									if($routing->getAuth()->getActionNoAuth() == null) {
 										echo '401 - Authentication required';
 										exit;
 									}
@@ -641,7 +641,7 @@ class Application
 									$credentials = $routing->getAuth()->getCredentials();
 									
 									if($data === false || !isset($credentials[$data['username']])) {
-										if($routing->getAuth()->getActionNoAuth() === null) {
+										if($routing->getAuth()->getActionNoAuth() == null) {
 											echo '401 - Authentication required';
 											exit;
 										}
@@ -656,7 +656,7 @@ class Application
 										$valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
 
 										if ($data['response'] != $valid_response) {
-											if($routing->getAuth()->getActionNoAuth() === null) {
+											if($routing->getAuth()->getActionNoAuth() == null) {
 												echo '401 - Authentication required';
 												exit;
 											}
