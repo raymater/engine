@@ -38,7 +38,7 @@ class Authentication
 		}
 		
 		if(is_array($_credentials)) {
-			if($this->is_assoc($_credentials)) {
+			if($this->is_assoc($_credentials) && $_credentials != array()) {
 				if($_actionNoAuth != null && is_callable($_actionNoAuth) == false) {
 					throw new \Exception("Action must be null or callable");
 					http_response_code(500);
