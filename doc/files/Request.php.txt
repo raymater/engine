@@ -229,4 +229,60 @@ class Request
 		$_POST = $this->filter($_POST);
 		return $_POST;
 	}
+	
+	/**
+		* Verify if request is sent by using XHR.
+		*
+		* For AJAX/XMLHttpRequest.
+		*
+		* @return boolean
+		*	Return if the request is sent by using XHR.
+	**/
+	public function isXHR() {
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+	}
+	
+	/**
+		* Get all headers
+		*
+		* Get an array with all headers.
+		*
+		* @return array
+		*	Array with all headers
+	**/
+	public function getHeaders() {
+		$headers = array (); 
+		foreach ($_SERVER as $name => $value) 
+		{ 
+			if (substr($name, 0, 5) == 'HTTP_') 
+			{ 
+				$headers[] = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5))))).": ".$value; 
+			} 
+		} 
+		return $headers;
+	}
+	
+	/**
+		* Check if header exists
+		*
+		* Return true if the HTTP header exist. False if not.
+		*
+		* @param string $_header
+		*	Name of header.
+		* @return bool
+		*	If header exists
+	**/
+	public function hasHeader($_header) {
+		$headers = $this->getHeaders();
+		
+		$check = false;
+		foreach($headers as $h) {
+			$title = explode(":", $h)[0];
+			if ($title == $_header) {
+				$check = true;
+			}
+		}
+		
+		return $check;
+	}
 }

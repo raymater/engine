@@ -53,6 +53,43 @@ class Response
 	}
 	
 	/**
+		* Check if header exists
+		*
+		* Return true if the HTTP header exist. False if not.
+		*
+		* @param string $_header
+		*	Name of header.
+		* @return bool
+		*	If header exists
+	**/
+	public function hasHeader($_header) {
+		$headers = headers_list();
+		
+		$check = false;
+		foreach($headers as $h) {
+			$title = explode(":", $h)[0];
+			if ($title == $_header) {
+				$check = true;
+			}
+		}
+		
+		return $check;
+	}
+	
+	/**
+		* Get all headers
+		*
+		* Get an array with all headers.
+		*
+		* @return array
+		*	Array with all headers
+	**/
+	public function getHeaders() {
+		$headers = headers_list();
+		return $headers;
+	}
+	
+	/**
 		* Set HTTP Header
 		*
 		* Set a specific HTTP Header with the name and the value.
