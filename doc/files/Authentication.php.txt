@@ -38,13 +38,13 @@ class Authentication
 		}
 		
 		if(is_array($_credentials)) {
-			if($this->is_assoc($_credentials)) {
+			if($this->is_assoc($_credentials) || $_credentials == array()) {
 				if($_actionNoAuth != null && is_callable($_actionNoAuth) == false) {
 					throw new \Exception("Action must be null or callable");
 					http_response_code(500);
 				}
 				else {
-					$this->credientials = $_credentials;
+					$this->credentials = $_credentials;
 					$this->type = $_type;
 					$this->actionNoAuth = $_actionNoAuth;
 					$this->realm = $_realm;
