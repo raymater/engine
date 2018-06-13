@@ -204,13 +204,6 @@ class Response
 		}
 		http_response_code($this->codeHTTP);
 		
-		if(in_array("Content-Type: text/html; charset=utf-8", headers_list())) {
-			$doc = new \DOMDocument();
-			$doc->loadHTML($_write, LIBXML_NOERROR);
-			$doc->encoding = 'UTF-8';
-			$_write = $doc->saveHTML();
-		}
-		
 		echo $_write;
 		return $this;
 	}
