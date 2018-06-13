@@ -251,7 +251,7 @@ class Request
 		*	Array with all headers
 	**/
 	public function getHeaders() {
-		$headers = array (); 
+		$headers = array(); 
 		foreach ($_SERVER as $name => $value) 
 		{ 
 			if (substr($name, 0, 5) == 'HTTP_') 
@@ -284,5 +284,34 @@ class Request
 		}
 		
 		return $check;
+	}
+	
+	/**
+		* Get value of a specific header
+		*
+		* Return the value of a HTTP Request header
+		*
+		* @param string $_header
+		*	Name of header.
+		* @return mixed
+		*	Return a string representing the value of header. Return false if the header is missing.
+	**/
+	public function getHeader($_header) {
+		$headers = $this->getHeaders();
+		
+		$val = false;
+		foreach($headers as $h) {
+			$title = explode(":", $h)[0];
+			if ($title == $_header) {
+				if(isset(explode(":", $h)[1])) {
+					$val = explode(":", $h)[1];
+				}
+				else {
+					$val = "";
+				}
+			}
+		}
+		
+		return $val;
 	}
 }

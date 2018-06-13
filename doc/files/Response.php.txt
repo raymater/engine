@@ -90,6 +90,35 @@ class Response
 	}
 	
 	/**
+		* Get value of a specific header
+		*
+		* Return the value of a HTTP Response header
+		*
+		* @param string $_header
+		*	Name of header.
+		* @return mixed
+		*	Return a string representing the value of header. Return false if the header is missing.
+	**/
+	public function getHeader($_header) {
+		$headers = $this->getHeaders();
+		
+		$val = false;
+		foreach($headers as $h) {
+			$title = explode(":", $h)[0];
+			if ($title == $_header) {
+				if(isset(explode(":", $h)[1])) {
+					$val = explode(":", $h)[1];
+				}
+				else {
+					$val = "";
+				}
+			}
+		}
+		
+		return $val;
+	}
+	
+	/**
 		* Set HTTP Header
 		*
 		* Set a specific HTTP Header with the name and the value.
