@@ -27,6 +27,7 @@ class Request
 	protected $path_info = null;
 	protected $auth_user = null;
 	protected $auth_pw = null;
+	protected $query_string = null
 	protected $app = null;
 	
 	/**
@@ -112,6 +113,9 @@ class Request
 		}
 		if(isset($_SERVER["PHP_AUTH_PW"])) {
 			$this->auth_pw = $_SERVER["PHP_AUTH_PW"];
+		}
+		if(isset($_SERVER['QUERY_STRING'])) {
+			$this->query_string = $_SERVER['QUERY_STRING'];
 		}
 	}
 	

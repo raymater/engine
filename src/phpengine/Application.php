@@ -34,6 +34,7 @@ class Application
 		if(array_key_exists("lang", $_config)) {
 			$this->lang = $_config["lang"];
 		}
+		setlocale(LC_ALL, strtolower($this->lang), strtolower($this->lang)."_".strtoupper($this->lang), strtolower($this->lang)."_".strtolower($this->lang));
 		
 		if(array_key_exists("timezone", $_config)) {
 			$this->timezone = $_config["timezone"];
