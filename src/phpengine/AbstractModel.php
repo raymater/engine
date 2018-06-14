@@ -19,7 +19,7 @@ abstract class AbstractModel {
 	/**
 		* Save all datas on database
 		*
-		* Make an INSERT INTO or an UDPDATE query.
+		* Make an INSERT INTO or an UPDATE query.
 		*
 		* @return Model
 		*	The Model itself
@@ -162,7 +162,7 @@ abstract class AbstractModel {
 	}
 	
 	/**
-		* Get a model object by field or by ID(s)
+		* Get a model object by field value or by ID(s)
 		*
 		* Make a SELECT query. Search by field or by ID(s). If you have many primary keys, you have to pass an associative array like this :
 		*	[ "my_first_field" => "value", "my_second_field" => "value", ...]
