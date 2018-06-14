@@ -144,19 +144,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1907203555"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2028688281"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1907203555" class="accordion-body collapse in">
+            <div id="namespace-2028688281" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-347430853"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-205114081"></a>
                                 <a href="../namespaces/phpengine.html" style="margin-left: 30px; padding-left: 0">phpengine</a>
             </div>
-            <div id="namespace-347430853" class="accordion-body collapse ">
+            <div id="namespace-205114081" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -223,6 +223,7 @@
                                                                     <a href="../classes/phpengine.AbstractModel.html#method_count" class="">count()</a><br />
                                                                     <a href="../classes/phpengine.AbstractModel.html#method_all" class="">all()</a><br />
                                                                     <a href="../classes/phpengine.AbstractModel.html#method_setConnection" class="">setConnection()</a><br />
+                                                                    <a href="../classes/phpengine.AbstractModel.html#method_toJSON" class="">toJSON()</a><br />
                                                                     <a href="../classes/phpengine.AbstractModel.html#method___get" class="">__get()</a><br />
                                                                     <a href="../classes/phpengine.AbstractModel.html#method___set" class="">__set()</a><br />
                                                             </section>
@@ -382,7 +383,7 @@
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">save() : \phpengine\Model</pre>
                 <p><em>Save all datas on database</em></p>
-                <p>Make an INSERT INTO or an UDPDATE query.</p>
+                <p>Make an INSERT INTO or an UPDATE query.</p>
 
                 
                 
@@ -439,7 +440,7 @@
                 <h3 class="public ">get()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">get(mixed  <span class="argument">$_field = null</span>) : mixed</pre>
-                <p><em>Get a model object by field or by ID(s)</em></p>
+                <p><em>Get a model object by field value or by ID(s)</em></p>
                 <p>Make a SELECT query. Search by field or by ID(s). If you have many primary keys, you have to pass an associative array like this :
 [ &quot;my_first_field&quot; =&gt; &quot;value&quot;, &quot;my_second_field&quot; =&gt; &quot;value&quot;, ...]
 If $_field param is null, equivalent as all() method.</p>
@@ -630,6 +631,35 @@ ID(s) value(s)</p></td>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_toJSON" name="method_toJSON" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">toJSON()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">toJSON() : string</pre>
+                <p><em>Get a JSON representation for your Model object</em></p>
+                <p>Convert Model object to a JSON string</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>JSON string</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method___get" name="method___get" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">__get()</h3>
@@ -757,7 +787,7 @@ ID(s) value(s)</p></td>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 14th, 2018 at 17:21.
+                    on June 14th, 2018 at 20:46.
                 </section>
             </section>
         </section>

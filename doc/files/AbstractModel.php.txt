@@ -19,7 +19,7 @@ abstract class AbstractModel {
 	/**
 		* Save all datas on database
 		*
-		* Make an INSERT INTO or an UDPDATE query.
+		* Make an INSERT INTO or an UPDATE query.
 		*
 		* @return Model
 		*	The Model itself
@@ -162,7 +162,7 @@ abstract class AbstractModel {
 	}
 	
 	/**
-		* Get a model object by field or by ID(s)
+		* Get a model object by field value or by ID(s)
 		*
 		* Make a SELECT query. Search by field or by ID(s). If you have many primary keys, you have to pass an associative array like this :
 		*	[ "my_first_field" => "value", "my_second_field" => "value", ...]
@@ -216,10 +216,15 @@ abstract class AbstractModel {
 			$q = static::$connection->query($query);
 			$tab = $q->fetch();
 			
-			$nameObj = get_called_class();
-			$o = new $nameObj();
-			foreach($tab as $f => $val) {
-				$o->$f = $val;
+			$o = null;
+			if($tab != false) {
+				$nameObj = get_called_class();
+				$o = new $nameObj();
+				foreach($tab as $f => $val) {
+					if(!is_int($f)) {
+						$o->$f = utf8_encode($val);
+					}
+				}
 			}
 			
 			return $o;
@@ -325,6 +330,19 @@ abstract class AbstractModel {
 	**/
 	public static function setConnection($_connection) {
 		static::$connection = $_connection;
+	}
+	
+	/**
+		* Get a JSON representation for your Model object
+		*
+		* Convert Model object to a JSON string
+		*
+		* @return string
+		*	JSON string
+	**/
+	public function toJSON()
+	{
+		return json_encode($this->fields, JSON_UNESCAPED_UNICODE);
 	}
 	
 	/**
