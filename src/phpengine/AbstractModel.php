@@ -216,11 +216,14 @@ abstract class AbstractModel {
 			$q = static::$connection->query($query);
 			$tab = $q->fetch();
 			
-			$nameObj = get_called_class();
-			$o = new $nameObj();
-			foreach($tab as $f => $val) {
-				if(!is_int($f)) {
-					$o->$f = utf8_encode($val);
+			$o = null;
+			if($tab != false) {
+				$nameObj = get_called_class();
+				$o = new $nameObj();
+				foreach($tab as $f => $val) {
+					if(!is_int($f)) {
+						$o->$f = utf8_encode($val);
+					}
 				}
 			}
 			
