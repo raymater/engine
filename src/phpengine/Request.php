@@ -27,7 +27,7 @@ class Request
 	protected $path_info = null;
 	protected $auth_user = null;
 	protected $auth_pw = null;
-	protected $query_string = null
+	protected $query_string = null;
 	protected $app = null;
 	
 	/**
