@@ -219,7 +219,9 @@ abstract class AbstractModel {
 			$nameObj = get_called_class();
 			$o = new $nameObj();
 			foreach($tab as $f => $val) {
-				$o->$f = $val;
+				if(!is_int($f)) {
+					$o->$f = utf8_encode($val);
+				}
 			}
 			
 			return $o;
@@ -325,6 +327,19 @@ abstract class AbstractModel {
 	**/
 	public static function setConnection($_connection) {
 		static::$connection = $_connection;
+	}
+	
+	/**
+		* Get a JSON representation for your Model object
+		*
+		* Convert Model object to a JSON string
+		*
+		* @return string
+		*	JSON string
+	**/
+	public function toJSON()
+	{
+		return json_encode($this->fields, JSON_UNESCAPED_UNICODE);
 	}
 	
 	/**
