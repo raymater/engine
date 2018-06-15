@@ -102,12 +102,7 @@ abstract class AbstractModel {
 			
 			$i = 1;
 			foreach($this->fields as $val) {
-				if(is_int($val) || is_double($val)) {
-					$query .= $val;
-				}
-				else {
-					$query .= "'".addslashes($val)."'";
-				}
+				$query .= "?";
 				
 				if(count($f) != $i) {
 					$query .= ", ";
@@ -117,12 +112,21 @@ abstract class AbstractModel {
 			}
 			
 			$query .= ")";
-			static::$connection->query($query);
+			$a = static::$connection->prepare($query);
+			$c = 1;
+			foreach($this->fields as $val) {
+				$a->bindParam($c, $val);
+				$c++;
+			}
+			
+			$a->execute();
 			
 			$pri = static::getPrimaryKey();
 			if(count($pri) == 1) {
+				$query = "SELECT LAST_INSERT_ID()";
+				$a = static::$connection->query($query);
 				$priF = $pri[0];
-				$this->priF = static::$connection->lastInsertId();
+				$this->fields[$priF] = $a->fetch()[0];
 			}
 		}
 		
@@ -340,8 +344,7 @@ abstract class AbstractModel {
 		* @return string
 		*	JSON string
 	**/
-	public function toJSON()
-	{
+	public function toJSON() {
 		return json_encode($this->fields, JSON_UNESCAPED_UNICODE);
 	}
 	
