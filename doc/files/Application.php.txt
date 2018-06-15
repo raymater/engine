@@ -444,7 +444,8 @@ class Application
 		foreach($tab as $rec) {
 			$className = $rec[0];
 			
-			$classPHP = "<?php";
+			$classPHP = "<?php
+";
 			
 			if($_namespace != "" && $_namespace != null) {
 $classPHP .= "namespace ".$_namespace.";";

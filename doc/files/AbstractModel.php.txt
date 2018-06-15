@@ -17,6 +17,26 @@ abstract class AbstractModel {
 	}
 	
 	/**
+		* Get class name
+		*
+		* Get class name
+		*
+		* @return string
+		*	Class name
+	**/
+	public static function getClassName() {
+		$className = get_called_class();
+		$tab = explode("\\", $className);
+		
+		if(count($tab) == 1) {
+			return $className;
+		}
+		else {
+			return $tab[count($tab) - 1];
+		}
+	}
+	
+	/**
 		* Save all datas on database
 		*
 		* Make an INSERT INTO or an UPDATE query.
@@ -39,7 +59,7 @@ abstract class AbstractModel {
 		}
 		
 		if($update == true) {
-			$query = "UPDATE `".get_called_class()."` SET ";
+			$query = "UPDATE `".static::getClassName()."` SET ";
 			
 			$sep = false;
 			foreach($this->fields as $f => $val) {
@@ -82,7 +102,7 @@ abstract class AbstractModel {
 			static::$connection->query($query);
 		}
 		else {
-			$query = "INSERT INTO `".get_called_class()."` (";
+			$query = "INSERT INTO `".static::getClassName()."` (";
 			$f = array_keys($this->fields);
 			
 			$i = 1;
@@ -143,7 +163,7 @@ abstract class AbstractModel {
 	**/
 	public function delete() {
 		$ids = static::getPrimaryKey();
-		$query = "DELETE FROM `".get_called_class()."` WHERE ";
+		$query = "DELETE FROM `".static::getClassName()."` WHERE ";
 		
 		$and = false;
 		foreach($ids as $id) {
@@ -183,7 +203,7 @@ abstract class AbstractModel {
 		}
 		else
 		{
-			$query = "SELECT * FROM `".get_called_class()."` WHERE ";
+			$query = "SELECT * FROM `".static::getClassName()."` WHERE ";
 			if(is_array($_field)) {
 				$and = false;
 				foreach($_field as $field => $value) {
@@ -211,7 +231,7 @@ abstract class AbstractModel {
 					}
 				}
 				else {
-					throw new \Exception("You don't have only one primary key on your table ".get_called_class());
+					throw new \Exception("You don't have only one primary key on your table ".static::getClassName());
 					http_response_code(500);
 					exit;
 				}
@@ -244,7 +264,7 @@ abstract class AbstractModel {
 		*	Array with all fields names
 	**/
 	public static function getAttributes() {
-		$q = static::$connection->query("DESCRIBE `".get_called_class()."`");
+		$q = static::$connection->query("DESCRIBE `".static::getClassName()."`");
 		$tab = $q->fetchAll();
 		
 		$fields = array();
@@ -264,7 +284,7 @@ abstract class AbstractModel {
 		*	Array with all primary key fields names
 	**/
 	public static function getPrimaryKey() {
-		$q = static::$connection->query("DESCRIBE `".get_called_class()."`");
+		$q = static::$connection->query("DESCRIBE `".static::getClassName()."`");
 		$tab = $q->fetchAll();
 		
 		$fields = array();
@@ -286,7 +306,7 @@ abstract class AbstractModel {
 		*	Number of records
 	**/
 	public static function count() {
-		$q = static::$connection->query("SELECT COUNT(*) AS nb FROM `".get_called_class()."`");
+		$q = static::$connection->query("SELECT COUNT(*) AS nb FROM `".static::getClassName()."`");
 		$tab = $q->fetch();
 		
 		return $tab["nb"];
@@ -301,7 +321,7 @@ abstract class AbstractModel {
 		*	Array of Model objects
 	**/
 	public static function all() {
-		$q = static::$connection->query("SELECT * FROM `".get_called_class()."`");
+		$q = static::$connection->query("SELECT * FROM `".static::getClassName()."`");
 		$tab = $q->fetchAll();
 		$models = array();
 		$primaryKeys = static::getPrimaryKey();
