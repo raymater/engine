@@ -424,6 +424,58 @@ class Application
 	}
 	
 	/**
+		* Generate models
+		*
+		* Create and load all models files corresponding to tables on database
+		*
+		* @param $_folder string
+		*	Folder where you want to generate models
+		* @param $_namespace string
+		*	Namespace for your models
+		* @param $_pdo \PDO
+		*	PDO Object
+		* @return Application
+		*	Return the Application itself
+	**/
+	public function generateModels($_folder, $_namespace, $_pdo) {
+		$q = $_pdo->query("SHOW TABLES");
+		$tab = $q->fetchAll();
+		
+		foreach($tab as $rec) {
+			$className = $rec[0];
+			
+			$classPHP = "<?php";
+			
+			if($_namespace != "" && $_namespace != null) {
+$classPHP .= "namespace ".$_namespace.";";
+			}
+			
+$classPHP .= "
+use \phpengine\AbstractModel as AbstractModel;
+
+class ".$className." extends AbstractModel {
+	// Generate by PhpEngine
+}";
+			
+			if(!file_exists($_folder."/".$className.".php")) {
+				$file = fopen($_folder."/".$className.".php", 'w');
+				fwrite($file, $classPHP);
+				fclose($file);
+			}
+			
+			require($_folder."/".$className.".php");
+			
+			$str = $className;
+			if($_namespace != "" && $_namespace != null) {
+				$str = "\\".$_namespace."\\".$className;
+			}
+			$str::setConnection($_pdo);
+		}
+		
+		return $this;
+	}
+	
+	/**
 		* Run the application
 		*
 		* Running the application to match the current URL route with all defined route and execute middlewares and the Route function defined. If Route is not found, run the 404 route action.
